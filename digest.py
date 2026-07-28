@@ -72,11 +72,16 @@ GOOGLE_NEWS_TEMPLATE = "https://news.google.com/rss/search?q={q}&hl=en-US&gl=US&
 # ---------------------------------------------------------------------------
 # EMAIL CONFIG (read from environment / GitHub Secrets — do not hardcode)
 # ---------------------------------------------------------------------------
-SENDER_EMAIL = os.environ.get("SENDER_EMAIL")
-SENDER_APP_PASSWORD = os.environ.get("SENDER_APP_PASSWORD")
-RECIPIENT_EMAIL = os.environ.get("RECIPIENT_EMAIL")
-SMTP_SERVER = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
-SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
+def _clean(val):
+    """Strip whitespace/newlines that can sneak in via copy-pasted secrets."""
+    return val.strip() if val else val
+
+
+SENDER_EMAIL = _clean(os.environ.get("SENDER_EMAIL"))
+SENDER_APP_PASSWORD = _clean(os.environ.get("SENDER_APP_PASSWORD"))
+RECIPIENT_EMAIL = _clean(os.environ.get("RECIPIENT_EMAIL"))
+SMTP_SERVER = _clean(os.environ.get("SMTP_SERVER", "smtp.gmail.com"))
+SMTP_PORT = int(_clean(os.environ.get("SMTP_PORT", "465")))
 
 
 def is_relevant(title, summary):
