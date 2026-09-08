@@ -26,4 +26,5 @@ jobs:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
           RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+          MAIL_TWO: ${{ secrets.RECIPIENT_EMAIL_2 }}
         run: python digest.py
