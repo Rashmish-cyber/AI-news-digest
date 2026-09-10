@@ -28,5 +28,3 @@ jobs:
           RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
           RECIPIENT_EMAIL_2: ${{ secrets.RECIPIENT_EMAIL_2 }}
         run: python digest.py
-           echo "Using first email: $RECIPIENT_EMAIL"
-          echo "Using second email: $RECIPIENT_EMAIL_2"
