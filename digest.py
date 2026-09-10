@@ -204,7 +204,7 @@ def build_html(items):
 
 
 def send_email(html_body, today_str):
-    if not (SENDER_EMAIL and SENDER_APP_PASSWORD and len(recipients) == 2):
+    if not (SENDER_EMAIL and SENDER_APP_PASSWORD and len(RECIPIENTS) == 2):
         raise RuntimeError(
             "Missing email credentials. Set SENDER_EMAIL, SENDER_APP_PASSWORD, "
             "RECIPIENT_EMAIL, RECIPIENT_EMAIL_2 as environment variables / GitHub Secrets."
