@@ -83,7 +83,6 @@ RECIPIENTS = [
         _clean(os.environ.get("RECIPIENT_EMAIL")),
         _clean(os.environ.get("RECIPIENT_EMAIL_2")),
     ]
-    RECIPIENTS = [r for r in RECIPIENTS if r]
 SMTP_SERVER = _clean(os.environ.get("SMTP_SERVER", "smtp.gmail.com"))
 SMTP_PORT = int(_clean(os.environ.get("SMTP_PORT", "465")))
 
