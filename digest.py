@@ -79,8 +79,11 @@ def _clean(val):
 
 SENDER_EMAIL = _clean(os.environ.get("SENDER_EMAIL"))
 SENDER_APP_PASSWORD = _clean(os.environ.get("SENDER_APP_PASSWORD"))
-RECIPIENT_EMAIL = _clean(os.environ.get("RECIPIENT_EMAIL"))
-RECIPIENT_EMAIL_2 = _clean(os.environ.get("RECIPIENT_EMAIL_2"))
+RECIPIENTS = [
+        _clean(os.environ.get("RECIPIENT_EMAIL")),
+        _clean(os.environ.get("RECIPIENT_EMAIL_2")),
+    ]
+    RECIPIENTS = [r for r in RECIPIENTS if r]
 SMTP_SERVER = _clean(os.environ.get("SMTP_SERVER", "smtp.gmail.com"))
 SMTP_PORT = int(_clean(os.environ.get("SMTP_PORT", "465")))
 
@@ -202,7 +205,7 @@ def build_html(items):
 
 
 def send_email(html_body, today_str):
-    if not (SENDER_EMAIL and SENDER_APP_PASSWORD and RECIPIENT_EMAIL and RECIPIENT_EMAIL_2):
+    if not (SENDER_EMAIL and SENDER_APP_PASSWORD and len(recipients) == 2):
         raise RuntimeError(
             "Missing email credentials. Set SENDER_EMAIL, SENDER_APP_PASSWORD, "
             "RECIPIENT_EMAIL, RECIPIENT_EMAIL_2 as environment variables / GitHub Secrets."
@@ -211,18 +214,15 @@ def send_email(html_body, today_str):
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"Digital Competition Law Digest — {today_str}"
     msg["From"] = SENDER_EMAIL
-    msg["To"] = RECIPIENT_EMAIL
-    msg["To"] = RECIPIENT_EMAIL_2
+    msg["To"] = ", ".join(RECIPIENTS)
     msg.attach(MIMEText(html_body, "html"))
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, context=context) as server:
         server.login(SENDER_EMAIL, SENDER_APP_PASSWORD)
-        server.sendmail(SENDER_EMAIL, RECIPIENT_EMAIL, msg.as_string())
-        server.sendmail(SENDER_EMAIL, RECIPIENT_EMAIL_2, msg.as_string())
-
-    print(f"Email sent to {RECIPIENT_EMAIL}")
-    print(f"Email sent to {RECIPIENT_EMAIL_2}")
+        for RECIPIENT in RECIPIENTS:
+            server.sendmail(SENDER_EMAIL, RECIPIENT, msg.as_string())
+            print(f"Email sent to {RECIPIENT}")
 
 
 def main():
