@@ -2,8 +2,8 @@ name: Daily Digital Competition Digest
 
 on:
   schedule:
-    # 9:00 AM IST = 3:30 AM UTC. GitHub Actions cron is always UTC.
-    - cron: "30 3 * * *"
+    # 7:00 AM IST = 1:30 AM UTC. GitHub Actions cron is always UTC.
+    - cron: "30 1 * * *"
   workflow_dispatch: {}   # lets you manually trigger a run from the Actions tab to test
 
 jobs:
